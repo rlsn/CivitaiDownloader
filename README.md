@@ -14,16 +14,16 @@ python login.py
 login your civitai account in the browser that shows up, the window should automatically close if you are successfully logged in.
 
 This will generate a file named `cookies.json` in the current directory. If you plan to download on a remote machine you have to upload this file and then run the following steps remotely. 
-### prepare urls
+### Prepare urls
 put the urls you are interested in a text file, one in each line, see example file [urls.txt](urls.txt])
 
-### retreive url info
+### Retreive url info
 ```
 python civitai.py --info --url_file [your_file_containing_links]
 ```
-to get the title of the links, this will generate a file 'model_info.json' containing the titles.
+to get the title of the links, this will generate a file `model_info.json` containing the titles.
 
-### download models
+### Download models
 ```
 python civitai.py --download --url_file [your_file_containing_links] --download_dir [download_directory]
 ```
