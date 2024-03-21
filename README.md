@@ -9,7 +9,7 @@ playwright install
 ### Save login cookie
 You have to do this on your machine with a screen. 
 ```
-python civitai_login.py
+python login.py
 ```
 login your civitai account in the browser that shows up, the window should automatically close if you are successfully logged in.
 
