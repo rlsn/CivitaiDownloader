@@ -16,8 +16,8 @@ def login():
         browser = pw.firefox.launch(headless=False)
         context = browser.new_context(viewport={"width": 1080, "height": 760})
         page = context.new_page()
-        # page.goto("https://civitai.com/login?returnUrl=/")
-        page.goto("https://civitai.com")
+        page.goto("https://civitai.com/login?returnUrl=/")
+        # page.goto("https://civitai.com")
 
         # page.wait_for_url("https://civitai.com")
         expect(page).to_have_url(re.compile("civitai.com+/$"), timeout=5000*1e3)

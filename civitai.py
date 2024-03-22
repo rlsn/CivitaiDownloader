@@ -18,7 +18,7 @@ async def download_models(urls,dir=".",cookies="cookies.json"):
     results={}
     os.makedirs(dir, exist_ok=True)
     async with async_playwright() as p:
-        browser = await p.chromium.launch()
+        browser = await p.firefox.launch(headless=True)
         try:
             context = await browser.new_context(storage_state=cookies)
             print("loaded cookies")
@@ -34,11 +34,18 @@ async def download_models(urls,dir=".",cookies="cookies.json"):
             await page.goto(url)
             # await page.screenshot(path="screenshot.png") # debug with this line
             async with page.expect_download() as download_info:
-                # download button
-                await page.locator("xpath=/html/body/div[1]/div/div/div/main/div[1]/div[2]/div/div[3]/div[1]/div/div[2]/div[1]/button[2]/div").click()
-                await page.locator("xpath=/html/body/div[1]/div/div/div/main/div[1]/div[2]/div/div[3]/div[1]/div/div[2]/div[1]/div[1]/div").click()
-
-
+                # locate download link
+                try:
+                    await page.get_by_role("link", name=re.compile("Download.*", re.IGNORECASE)).click(timeout=6000)
+                    # link = await page.locator("xpath=/html/body/div[1]/div/div/div/main/div[1]/div[2]/div/div[3]/div[1]/div/div[2]/div[1]/a/div").click(timeout=6000)
+                except:
+                    print("looking for alternative link")
+                    try:
+                        await page.locator("xpath=/html/body/div[1]/div/div/div/main/div[1]/div[2]/div/div[3]/div[1]/div/div[2]/div[1]/button[2]/div").click(timeout=6000)
+                        link = await page.locator("xpath=/html/body/div[1]/div/div/div/main/div[1]/div[2]/div/div[3]/div[1]/div/div[2]/div[1]/div[1]/div").click(timeout=6000)
+                    except:
+                        print(f"cannot find download link for {url}, pass")
+                        continue
             download = await download_info.value
 
             print(f"downloading: {download.suggested_filename}: {download.url}")
